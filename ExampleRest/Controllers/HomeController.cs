@@ -1,4 +1,5 @@
 using ExampleRest.Models;
+using ExampleRest.Interface;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -7,10 +8,12 @@ namespace ExampleRest.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IPhotoService PhotoService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IPhotoService _photoService)
         {
             _logger = logger;
+            PhotoService = _photoService;
         }
 
         public IActionResult Index()
@@ -18,14 +21,9 @@ namespace ExampleRest.Controllers
             return View();
         }
 
-        public IActionResult GetPhotos(DataTableJS request)
+        public async Task<IActionResult> GetPhotos(DataTableJS request)
         {
-            var data = new DataTableResponse<string>()
-            {
-                CountTotal = 20,
-                CountFiltered = 5,
-                Result = ["1", "2", "3"]
-            };
+            var data = await PhotoService.GetPhotosAsync(request);
 
             return Json(new
             {

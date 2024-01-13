@@ -1,3 +1,6 @@
+using ExampleRest.Interface;
+using ExampleRest.Service;
+
 namespace ExampleRest
 {
     public class Program
@@ -8,6 +11,9 @@ namespace ExampleRest
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            //Injección de dependencia
+            builder.Services.AddTransient<IPhotoService, PhotoService>();
 
             var app = builder.Build();
 
