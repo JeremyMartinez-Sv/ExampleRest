@@ -1,18 +1,18 @@
-﻿using ExampleRest.Controllers;
-using ExampleRest.Interface;
+﻿using ExampleRest.Interface;
 using ExampleRest.Models;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using System.Diagnostics;
 
 namespace ExampleRest.Service
 {
     public class PhotoService : IPhotoService
     {
         private readonly ILogger<PhotoService> logger;
-        public PhotoService(ILogger<PhotoService> _logger)
+        private readonly Constants constants;
+        public PhotoService(ILogger<PhotoService> _logger, IOptions<Constants> _constants)
         {
             logger = _logger;
+            constants = _constants.Value;
         }
 
         public async Task<DataTableResponse<Photo>> GetPhotosAsync(DataTableJS model)
@@ -32,7 +32,7 @@ namespace ExampleRest.Service
 
         private async Task<List<Photo>> RequestPhotos(int start, int limit)
         {
-            string apiUrl = $"https://jsonplaceholder.typicode.com/photos?_start={start}&_limit={limit}";
+            string apiUrl = constants.APILink + "/photos?_start=" + start + " &_limit=" + limit;
 
             using HttpClient client = new();
             try

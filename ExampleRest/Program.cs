@@ -1,4 +1,5 @@
 using ExampleRest.Interface;
+using ExampleRest.Models;
 using ExampleRest.Service;
 
 namespace ExampleRest
@@ -11,6 +12,9 @@ namespace ExampleRest
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+
+            builder.Services.Configure<Constants>(builder.Configuration.GetSection(Constants.SectionName));
 
             //Injección de dependencia
             builder.Services.AddTransient<IPhotoService, PhotoService>();

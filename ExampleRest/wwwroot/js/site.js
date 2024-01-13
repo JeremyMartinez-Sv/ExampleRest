@@ -1,12 +1,22 @@
 ﻿var dataTable;
 
 $(function () {
+    $.fn.dataTable.ext.errMode = function (settings, helpPage, message) {
+        console.log('Error al cargar datos:', message);
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: '¡Ups! Sucedió un problema al recopilar la información.',
+        });
+    };
     
     dataTable = $("#dataTable").DataTable({
         "processing": true,
         "serverSide": true,
         "searching": false,
-        "pageLength": 10,
+        "lengthMenu": [1, 5, 10, 25, 50, 100],
+        "pageLength": 5,
         "ajax": {
             url: "/Home/GetPhotos/",
             method: "GET",
@@ -27,14 +37,14 @@ $(function () {
             {
                 "orderable": true,
                 "render": function (data, type, row) {
-                    var imageSize = "width='100' height='100'"; 
                     
-                    var imgElement = "<img src='" + row.thumbnailUrl + "' " + imageSize + " />";
-                    
+                    var imgElement = "<a href='" + row.url + "' target='_blank'>" +
+                        "<img src='" + row.thumbnailUrl + "' width='100' height='100' />" +
+                        "</a>";
+
                     return imgElement;
                 }
             }
-
         ]
     });
 })
