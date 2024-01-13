@@ -18,25 +18,6 @@ namespace ExampleRest.Controllers
             return View();
         }
 
-        public IActionResult GetPhotos(DataTableJS request)
-        {
-            var data = new DataTableResponse<string>()
-            {
-                CountTotal = 20,
-                CountFiltered = 5,
-                Result = ["1", "2", "3"]
-            };
-
-            return Json(new
-            {
-                draw = request.Draw,
-                recordsTotal = data.CountTotal,
-                recordsFiltered = data.CountFiltered,
-                request_ = request,
-                data = data.Result
-            }); ;
-        }
-
         public IActionResult Privacy()
         {
             return View();
